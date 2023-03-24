@@ -3,19 +3,19 @@ const emailInput = document.getElementById("email");
 const countryInput = document.getElementById("country");
 const passwordInput = document.getElementById("password");
 const confPasswordInput = document.getElementById("confirm-password");
-const formFields = document.getElementsByClassName("form-fields");
+const zipCode = document.getElementById("zip-code");
 
 const formController = (() => {
   const validateEmail = () => {
-    const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (emailInput.value.match(emailRegex)) {
+    if (!emailInput.validity.typeMismatch) {
       console.log("valid email address ");
       return true;
     }
     console.log("invalid email address ");
     return false;
   };
+
+  const validateZipCode = () => {};
 
   const validatePassword = () => {
     // Please enter a password that is between 8 and 20 characters long and contains at least one number
@@ -65,6 +65,9 @@ const formController = (() => {
 const displayController = (() => {
   emailInput.addEventListener("blur", () => {
     formController.validateEmail();
+  });
+  zipCode.addEventListener("blur", () => {
+    formController.validateZipCode();
   });
   passwordInput.addEventListener("blur", () => {
     formController.validatePassword();
