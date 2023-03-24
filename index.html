@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Digester</title>
-    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -14,16 +14,21 @@
     <div class="disclaimer">
       No data will be harmed, processed or stored by this form
     </div>
-    <form>
+    <form id="form">
       <h2>Data plz!</h2>
       <ul>
         <li>
           <label for="email">Email</label>
-          <input type="email" id="mail" name="user_email" required />
+          <input
+            type="email"
+            id="email"
+            name="user_email"
+            class="form-fields"
+          />
         </li>
         <li>
           <label for="country">Country</label>
-          <select id="country" name="country" required>
+          <select id="country" name="country" class="form-fields">
             <option value="America">America</option>
             <option value="United Kingdom">United Kingdom</option>
             <option value="France">France</option>
@@ -31,15 +36,22 @@
         </li>
         <li>
           <label for="password">Password</label>
-          <input type="password" id="password" name="user_password" required />
+          <input
+            type="password"
+            id="password"
+            name="user_password"
+            class="form-fields"
+          />
         </li>
         <li>
           <label for="confirm_password">Confirm password</label>
-          <input type="password" id="confirm_password" />
+          <input type="password" id="confirm_password" class="form-fields" />
         </li>
         <li class="button">
           <label for="Submit form"></label>
-          <button id="submitButton" type="submit">Feed Me</button>
+          <button id="submitButton" type="submit" class="form-fields">
+            Feed Me
+          </button>
         </li>
       </ul>
     </form>
