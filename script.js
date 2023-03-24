@@ -29,7 +29,16 @@ const formController = (() => {
       console.log("invalid password ");
     }
   };
-  return { validateEmail, validatePassword };
+
+  const checkPasswordsMatch = () => {
+    if (confPasswordInput.value === passwordInput.value) {
+      console.log("Password match ");
+    } else {
+      console.log("Passwords don't match");
+    }
+  };
+
+  return { validateEmail, validatePassword, checkPasswordsMatch };
 })();
 
 const displayController = (() => {
@@ -38,5 +47,9 @@ const displayController = (() => {
   });
   passwordInput.addEventListener("blur", () => {
     formController.validatePassword();
+  });
+
+  confPasswordInput.addEventListener("blur", () => {
+    formController.checkPasswordsMatch();
   });
 })();
