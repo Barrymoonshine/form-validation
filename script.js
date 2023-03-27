@@ -7,10 +7,11 @@ const zipCode = document.getElementById("zip-code");
 
 const formController = (() => {
   const validateEmail = () => {
-    if (!emailInput.validity.typeMismatch) {
+    if (emailInput.validity.valid) {
       console.log("valid email address ");
       return true;
     }
+    emailInput.setCustomValidity("I am expecting an email address!");
     console.log("invalid email address ");
     return false;
   };
