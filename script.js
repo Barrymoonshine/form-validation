@@ -5,6 +5,8 @@ const passwordInput = document.getElementById("password");
 const confPasswordInput = document.getElementById("confirm-password");
 const zipCode = document.getElementById("zip-code");
 
+form.noValidate = true;
+
 const formController = (() => {
   const validateEmail = () => {
     if (emailInput.validity.valid) {
@@ -41,10 +43,8 @@ const formController = (() => {
   };
 
   const clearFields = () => {
-    passwordInput.value = "";
-    emailInput.value = "";
-    confPasswordInput.value = "";
-    countryInput.value = "America";
+    const field = Array.from(form.elements);
+    field.forEach((item) => (item.value = ""));
   };
 
   const checkAllFields = () => {
