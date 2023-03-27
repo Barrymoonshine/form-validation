@@ -8,14 +8,30 @@ const zipCode = document.getElementById("zip-code");
 form.noValidate = true;
 
 const formController = (() => {
-  const validateEmail = () => {
-    if (emailInput.validity.valid) {
-      console.log("valid email address ");
+  const addClassName = (e) => {
+    e.target.className = "field-clicked";
+  };
+
+  const styleElement = (validity, target) => {
+    if (validity === true) {
+      target.classList.remove("invalid");
+      target.classList.add("valid");
+    } else if (validity === false) {
+      target.classList.remove("invalid");
+      target.classList.add("valid");
+    }
+  };
+
+  const validateEmail = (e) => {
+    const target = document.getElementById(e.target.id);
+    const emailValidity = emailInput.validity;
+    if (emailValidity.valid) {
       return true;
     }
-    emailInput.setCustomValidity("I am expecting an email address!");
-    console.log("invalid email address ");
-    return false;
+    if (!emailValidity.valid) {
+      return false;
+    }
+    styleElement(emailValidity.valid, target);
   };
 
   const validateZipCode = () => {};
@@ -47,15 +63,17 @@ const formController = (() => {
     field.forEach((item) => (item.value = ""));
   };
 
-  const checkAllFields = () => {
+  const checkAllFields = (e) => {
     if (validateEmail() && validatePassword() && checkPasswordsMatch()) {
       console.log("All fields have been completed correctly, form submitted");
       clearFields();
     } else {
+      e.stopImmediatePropagation();
       console.log("Some fields have not been completed correctly ");
     }
   };
   return {
+    addClassName,
     validateEmail,
     validatePassword,
     checkPasswordsMatch,
@@ -64,19 +82,22 @@ const formController = (() => {
 })();
 
 const displayController = (() => {
-  emailInput.addEventListener("blur", () => {
-    formController.validateEmail();
+  emailInput.addEventListener("blur", (e) => {
+    formController.addClassName(e);
+    formController.validateEmail(e);
   });
-  zipCode.addEventListener("blur", () => {
+  zipCode.addEventListener("blur", (e) => {
+    formController.addClassName(e);
     formController.validateZipCode();
   });
-  passwordInput.addEventListener("blur", () => {
+  passwordInput.addEventListener("blur", (e) => {
+    formController.addClassName(e);
     formController.validatePassword();
   });
-  confPasswordInput.addEventListener("blur", () => {
+  confPasswordInput.addEventListener("blur", (e) => {
+    formController.addClassName(e);
     formController.checkPasswordsMatch();
   });
-
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     formController.checkAllFields();

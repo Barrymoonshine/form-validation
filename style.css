@@ -2,13 +2,13 @@ ul {
   list-style: none;
 }
 
-input:focus:valid {
+.field-clicked:valid {
   border: 2px solid green;
   background-color: 2px solid green;
   color: green;
 }
 
-input:focus:invalid {
+.field-clicked:invalid {
   border: 2px solid red;
   background-color: 2px solid red;
   color: red;
