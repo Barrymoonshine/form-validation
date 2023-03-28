@@ -1,10 +1,6 @@
 ## Summary
 
-This is a straight forward project designed to test using javascript only to complete client side form validation using the Constraint Validation API.
-
-No data is processed by this form!
-
-link to live
+A straight forward project designed to test using javascript only to complete client side form validation using the Constraint Validation API.
 
 ## Key Learning Points
 
