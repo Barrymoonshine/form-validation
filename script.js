@@ -4,8 +4,7 @@ const formController = (() => {
   };
 
   const validateEmail = () => {
-    const isEmailValid = document.getElementById("email").validity;
-    console.log(`isEmailValid: ${isEmailValid}`);
+    const isEmailValid = document.getElementById("email").validity.valid;
     if (isEmailValid) {
       return true;
     }
@@ -19,22 +18,18 @@ const formController = (() => {
     const zipCode = document.getElementById("zip-code");
     if (country === "US") {
       zipCode.pattern = "^d{5}(?:[-s]d{4})?$";
-      console.log(`zipcodepattern: ${zipCode.pattern}`);
     }
     if (country === "UK") {
       zipCode.pattern = "^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z]{2}$";
-      console.log(`zipcodepattern: ${zipCode.pattern}`);
     }
     if (country === "FR") {
       zipCode.pattern =
         "^(?:(?:(?:0[1-9]|[1-8]d|9[0-4])(?:d{3})?)|97[1-8]|98[4-9]|‌​‌​2[abAB])$";
-      console.log(`zipcodepattern: ${zipCode.pattern}`);
     }
   };
 
   const validateZipCode = () => {
     const isZipCodeValid = document.getElementById("zip-code").validity.valid;
-    console.log(`isZipCodeValid: ${isZipCodeValid}`);
     if (isZipCodeValid) {
       return true;
     }
@@ -43,9 +38,8 @@ const formController = (() => {
     }
   };
 
-  const validatePassword = (targetElement) => {
-    const isPasswordValid = targetElement.validity.valid;
-    console.log(`isPasswordValid: ${isPasswordValid}`);
+  const validatePassword = () => {
+    const isPasswordValid = document.getElementById("password").validity.valid;
     if (isPasswordValid) {
       return true;
     }
@@ -54,22 +48,26 @@ const formController = (() => {
     }
   };
 
-  const checkPasswordsMatch = (targetElement) => {
+  const checkPasswordsMatch = () => {
     const passwordValue = document.getElementById("password").value;
-    const confirmPasswordValue = targetElement.value;
+    const confirmPassword = document.getElementById("confirm-password");
+    const confirmPasswordValue = confirmPassword.value;
     if (passwordValue === confirmPasswordValue) {
-      targetElement.setCustomValidity("");
+      confirmPassword.setCustomValidity("");
       return true;
     }
     if (passwordValue !== confirmPasswordValue) {
-      targetElement.setCustomValidity("Passwords do not match");
+      confirmPassword.setCustomValidity("Passwords do not match");
       return false;
     }
   };
 
   const clearFields = () => {
     const field = Array.from(form.elements);
-    field.forEach((item) => (item.value = ""));
+    field.forEach((item) => {
+      item.value = "";
+      item.className = "field submitted";
+    });
   };
 
   const checkAllFields = (e) => {
@@ -96,19 +94,17 @@ const displayController = (() => {
   const form = document.getElementById("form");
 
   form.addEventListener("keyup", (e) => {
-    const target = e.target.id;
-    const targetElement = document.getElementById(`${target}`);
-    if (target === "email") {
-      formController.validateEmail(e);
+    if (e.target.id === "email") {
+      formController.validateEmail();
       formController.addClassName(e);
-    } else if (target === "zip-code") {
+    } else if (e.target.id === "zip-code") {
       formController.validateZipCode();
       formController.addClassName(e);
-    } else if (target === "password") {
-      formController.validatePassword(targetElement);
+    } else if (e.target.id === "password") {
+      formController.validatePassword();
       formController.addClassName(e);
-    } else if (target === "confirm-password") {
-      formController.checkPasswordsMatch(targetElement);
+    } else if (e.target.id === "confirm-password") {
+      formController.checkPasswordsMatch();
       formController.addClassName(e);
     } else {
       // Do nothing as a form input element hasn't been selected
@@ -123,6 +119,6 @@ const displayController = (() => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    formController.checkAllFields();
+    formController.checkAllFields(e);
   });
 })();
