@@ -1,61 +1,81 @@
-const form = document.getElementById("form");
 const emailInput = document.getElementById("email");
 const countryInput = document.getElementById("country");
 const passwordInput = document.getElementById("password");
 const confPasswordInput = document.getElementById("confirm-password");
 const zipCode = document.getElementById("zip-code");
 
-form.noValidate = true;
-
 const formController = (() => {
   const addClassName = (e) => {
     e.target.className = "field-clicked";
   };
 
-  const styleElement = (validity, target) => {
+  const styleElement = (validity, targetElement) => {
     if (validity === true) {
-      target.classList.remove("invalid");
-      target.classList.add("valid");
+      targetElement.classList.remove("invalid");
+      targetElement.classList.add("valid");
     } else if (validity === false) {
-      target.classList.remove("invalid");
-      target.classList.add("valid");
+      targetElement.classList.remove("valid");
+      targetElement.classList.add("invalid");
     }
   };
 
-  const validateEmail = (e) => {
-    const target = document.getElementById(e.target.id);
-    const emailValidity = emailInput.validity;
-    if (emailValidity.valid) {
+  const validateEmail = () => {
+    const isEmailValid = emailInput.validity;
+    if (isEmailValid) {
       return true;
     }
-    if (!emailValidity.valid) {
+    if (!isEmailValid) {
       return false;
     }
-    styleElement(emailValidity.valid, target);
   };
 
-  const validateZipCode = () => {};
-
-  const validatePassword = () => {
-    // Please enter a password that is between 8 and 20 characters long and contains at least one number
-    // one capital letter and one special symbol(!@#$%^&*=+-_)
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,20}$/;
-    if (passwordInput.value.match(passwordRegex)) {
-      console.log("valid password ");
+  const validateZipCode = () => {
+    const ukPostCodeRegex = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/;
+    const usZipCodeRegex = /^\d{5}(?:[-\s]\d{4})?$/;
+    const frenchZipCodeRegex =
+      /^(?:(?:(?:0[1-9]|[1-8]\d|9[0-4])(?:\d{3})?)|97[1-8]|98[4-9]|‌​‌​2[abAB])$/;
+    const country = countryInput.value;
+    const zipCodeValue = zipCode.value;
+    let isZipCodeValue = false;
+    if (country === "America" && zipCodeValue.matches(usZipCodeRegex)) {
+      isZipCodeValue = true;
       return true;
     }
-    console.log("invalid password ");
+    if (country === "United Kingdom" && zipCodeValue.matches(ukPostCodeRegex)) {
+      isZipCodeValue = true;
+      return true;
+    }
+    if (country === "France" && zipCodeValue.matches(frenchZipCodeRegex)) {
+      isZipCodeValue = true;
+      return true;
+    }
+    styleElement(isZipCodeValue, zipCode);
     return false;
   };
 
-  const checkPasswordsMatch = () => {
-    if (confPasswordInput.value === passwordInput.value) {
-      console.log("Password match ");
+  const validatePassword = (targetElement) => {
+    const isPasswordValid = targetElement.valid;
+    if (isPasswordValid) {
       return true;
     }
-    console.log("Passwords don't match");
-    return false;
+    if (!isPasswordValid) {
+      return false;
+    }
+  };
+
+  const checkPasswordsMatch = (targetElement) => {
+    const passwordValue = document.getElementById("password").value;
+    const confirmPasswordValue = targetElement.value;
+    console.log(`passwordValue: ${passwordValue}`);
+    console.log(`confirmPasswordValue: ${confirmPasswordValue}`);
+    if (passwordValue === confirmPasswordValue) {
+      targetElement.setCustomValidity("");
+      return true;
+    }
+    if (passwordValue !== confirmPasswordValue) {
+      targetElement.setCustomValidity("Passwords do not match");
+      return false;
+    }
   };
 
   const clearFields = () => {
@@ -69,35 +89,42 @@ const formController = (() => {
       clearFields();
     } else {
       e.stopImmediatePropagation();
-      console.log("Some fields have not been completed correctly ");
+      console.log("Some fields have not been completed correctly!! ");
     }
   };
   return {
     addClassName,
     validateEmail,
     validatePassword,
+    validateZipCode,
     checkPasswordsMatch,
     checkAllFields,
   };
 })();
 
 const displayController = (() => {
-  emailInput.addEventListener("blur", (e) => {
-    formController.addClassName(e);
-    formController.validateEmail(e);
+  const form = document.getElementById("form");
+
+  form.addEventListener("keyup", (e) => {
+    const target = e.target.id;
+    const targetElement = document.getElementById(`${target}`);
+    if (target === "email") {
+      formController.validateEmail(e);
+      formController.addClassName(e);
+    } else if (target === "zip-code") {
+      formController.validateZipCode();
+      formController.addClassName(e);
+    } else if (target === "password") {
+      formController.validatePassword(targetElement);
+      formController.addClassName(e);
+    } else if (target === "confirm-password") {
+      formController.checkPasswordsMatch(targetElement);
+      formController.addClassName(e);
+    } else {
+      // Do nothing as a form input element hasn't been selected
+    }
   });
-  zipCode.addEventListener("blur", (e) => {
-    formController.addClassName(e);
-    formController.validateZipCode();
-  });
-  passwordInput.addEventListener("blur", (e) => {
-    formController.addClassName(e);
-    formController.validatePassword();
-  });
-  confPasswordInput.addEventListener("blur", (e) => {
-    formController.addClassName(e);
-    formController.checkPasswordsMatch();
-  });
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     formController.checkAllFields();
