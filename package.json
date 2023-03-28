@@ -1,0 +1,25 @@
+{
+  "name": "form-validation",
+  "version": "1.0.0",
+  "description": "This is a straight forward project designed to test using javascript only to complete client side form validation using the Constraint Validation API.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Barrymoonshine/form-validation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Barrymoonshine/form-validation/issues"
+  },
+  "homepage": "https://github.com/Barrymoonshine/form-validation#readme",
+  "devDependencies": {
+    "eslint": "^8.36.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5"
+  }
+}
