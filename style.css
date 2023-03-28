@@ -2,13 +2,13 @@ ul {
   list-style: none;
 }
 
-.field-clicked:valid {
+.field-selected:valid {
   border: 2px solid green;
   background-color: 2px solid green;
   color: green;
 }
 
-.field-clicked:invalid {
+.field-selected:invalid {
   border: 2px solid red;
   background-color: 2px solid red;
   color: red;
